@@ -1,4 +1,5 @@
 import gym
+from gym import wrappers
 import random
 import numpy as np
 import tflearn
@@ -7,6 +8,7 @@ from tflearn.layers.estimator import regression
 from statistics import mean, median
 from collections import Counter
 
+upload_folder = "/tmp/cartpole-experiment-2"
 LR = 1e-3
 env = gym.make('CartPole-v0')
 env.reset()
@@ -105,7 +107,7 @@ model = train_model(training_data)
 
 scores = []
 choices = []
-
+env = wrappers.Monitor(env, upload_folder)
 for each_game in range(100):
     score = 0
     game_memory = []
@@ -129,5 +131,8 @@ for each_game in range(100):
 
 print('Average Score', sum(scores)/len(scores))
 print('Choice 1: {}, Choice 0: {}'.format(float(choices.count(1))/len(choices), float(choices.count(0))/len(choices)))
+
+#env.close()
+#gym.upload(upload_folder, api_key='sk_4mEnOlgJQeKLv6djQnww')
 
 
